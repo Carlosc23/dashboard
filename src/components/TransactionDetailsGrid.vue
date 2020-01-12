@@ -27,6 +27,8 @@
 <script>
 export default {
   props: ['entries'],
+  mounted() {
+  }
 }
 </script>
 <style>

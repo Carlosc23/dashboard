@@ -1,5 +1,5 @@
 <template>
-   <zingchart :data="chartConfig"  :height="'100%'" ref="chart"/> 
+   <zingchart :data="chartConfig"  :height="'100%'"/> 
 </template>
 
 <script>
@@ -10,7 +10,14 @@ export default {
     };
   },
   computed: {
-
+    acquisitionBreakdown() {
+      const categories = this.entries.reduce((acc, transaction) => {
+        acc[transaction.purchase_type] = acc[transaction.purchase_type] || 0;
+        acc[transaction.purchase_type]++;
+        return acc;
+      }, {});
+      return categories;
+    },
     chartConfig() {
       const colors = [
         {
@@ -31,7 +38,7 @@ export default {
             backgroundColor: '#45D6C4'
           }
         },
-      ];
+      ]
       const config ={
         type: 'pie',
         tooltip: {
@@ -49,8 +56,12 @@ export default {
          	  borderWidth: 2,
           }
         },
-        // TODO: Format the data and pass it to the series.
-        series: []
+        series: Object.keys(this.acquisitionBreakdown).map((type, index) => {
+          return Object.assign(
+            { values: [this.acquisitionBreakdown[type]], text: type},
+            colors[index],
+          );
+        })
       };
       return config;
     },

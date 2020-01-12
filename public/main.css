@@ -29,6 +29,11 @@ header h4 {
 .dashboard__row > * {
   flex: 1;
 }
+.dashboard__summary{
+  display: flex;
+  justify-content: space-around;
+  margin: 0.5rem 0;
+}
 #lt-chart {
   flex: 2;
 }

@@ -1,26 +1,159 @@
 <template>
   <div id="app">
+     
     <section class="dashboard">
       <header>
-        <!-- date range placeholder -->
+        <h1>Your Sales Dashboard</h1>
       </header>
+       <div class="dashboard__row">
+        <total-sales-spark :values="transactions" :start="range.start" :end="range.end"/>
+        <total-sales-spark :values="transactions" :start="range.start" :end="range.end"/>
+        <total-sales-spark :values="transactions" :start="range.start" :end="range.end"/>
+        </div>
       <div class="dashboard__row">
-        <latest-transactions-chart ref="latestTransactions" />
-        <transaction-breakdown-chart ref="transactionBreakdown"  />
+        <latest-transactions-chart style="flex:2" :entries="transactions" />
+        <transaction-breakdown-chart  :entries="transactions" />
       </div>
       <div class="dashboard__row">
-        <transaction-details-grid />
+        <transaction-details-grid id="td-grid" :entries="transactions" />
       </div>
+
     </section>
   </div>
 </template>
+<style>
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  margin: 2rem;
+  --light-blue: #2196f3;
+}
+h1 {
+  margin: 0;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1rem;
+}
+nav {
+  display: flex;
+  align-items: center;
+}
+a {
+  color: var(--light-blue);
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+a + a {
+  margin: 0 1rem;
+}
+a:visited {
+  color: var(--light-blue);
+}
+a:hover {
+  text-decoration: none;
+}
+a.router-link-exact-active {
+  font-weight: 500;
+  border-bottom: 2px solid var(--light-blue);
+}
+/* LAYOUT */
+.dashboard {
+  width: 100%;
+}
+.dashboard__summary{
+  display: flex;
+  justify-content: space-around;
+  margin: 0.5rem 0;
+}
+.content {
+  display: flex;
+  height: 600px;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.content__col {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 780px;
+  max-width: 780px;
+  min-height: 600px;
+  max-height: 600px;
+}
+.content__col + .content__col {
+  padding-left: 1rem;
+  border-left: 1px solid #ddd;
+}
+.content__row {
+  flex: 1;
+  display: flex;
+}
+.cell {
+  flex: 1;
+  margin: 1rem;
+}
 
+/* SCORECARD */
+.scorecard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+.scorecard__value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--light-blue);;
+}
+.scorecard__header {
+  margin-top: 0.4rem;
+}
+.scorecard__subheader {
+  font-size: 0.8rem;
+}
+
+/* CHEVRONS */
+.chevron::before {
+	border-style: solid;
+	border-width: 0.15em 0.15em 0 0;
+	content: '';
+	display: inline-block;
+	height: 0.45em;
+	left: 0.15em;
+	position: relative;
+	top: 0.45em;
+	transform: rotate(-45deg);
+	vertical-align: top;
+	width: 0.45em;
+}
+.chevron.right:before {
+	left: 0;
+	transform: rotate(45deg);
+}
+.chevron.bottom:before {
+	top: .15em;
+	transform: rotate(135deg);
+}
+.chevron.left:before {
+	left: 0.25em;
+	transform: rotate(-135deg);
+}
+</style>
 <script>
-import transactions from './data/transactions.js';
+import rawTransactions from './data/transactions.js';
 
 import LatestTransactionsChart from './components/LatestTransactionsChart.vue';
 import TransactionBreakdownChart from './components/TransactionBreakdownChart.vue';
 import TransactionDetailsGrid from './components/TransactionDetailsGrid.vue';
+import TotalSalesSpark from "./components/TotalSalesSpark.vue";
+//import TotalYTDSpark from "./components/TotalYTDSpark.vue";
+//import ChangeCustomersSpark from "./components/ChangeCustomersSpark.vue";
 
 export default {
   name: 'app',
@@ -28,17 +161,29 @@ export default {
     LatestTransactionsChart,
     TransactionBreakdownChart,
     TransactionDetailsGrid,
+    TotalSalesSpark,
+    //"total-ytd-spark": TotalYTDSpark,
+    //ChangeCustomersSpark
   },
+   computed: {
+    transactions() {
+      return this.rawTransactions.filter(entry => {
+        return (
+          entry.timestamp >= this.range.start.getTime() &&
+          entry.timestamp < this.range.end.getTime()
+        );
+      });
+    },},
   data() {
     return {
-      transactions,
+       rawTransactions,
+       range: {
+        start: new Date(2019, 0, 1), 
+        end: new Date(2019, 9, 8) 
+      }
     }
   },
-  computed: {
-
-  },
-  methods: {
-
+  mounted() {
   }
 }
 </script>

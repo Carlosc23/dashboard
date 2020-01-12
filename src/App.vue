@@ -3,12 +3,12 @@
      
     <section class="dashboard">
       <header>
-        <h1>Your Sales Dashboard</h1>
+        <h1>BAM Dashboard</h1>
       </header>
-       <div class="dashboard__row">
-        <total-sales-spark :values="transactions" :start="range.start" :end="range.end"/>
-        <total-sales-spark :values="transactions" :start="range.start" :end="range.end"/>
-        <total-sales-spark :values="transactions" :start="range.start" :end="range.end"/>
+       <div class="dashboard__summary">
+        <total-sales-spark :values="transactions" :textTit="tit" :start="range.start" :end="range.end"/>
+        <total-sales-spark :values="transactions" :textTit="tit2" :start="range.start" :end="range.end"/>
+        <total-sales-spark :values="transactions" :textTit="tit3" :start="range.start" :end="range.end"/>
         </div>
       <div class="dashboard__row">
         <latest-transactions-chart style="flex:2" :entries="transactions" />
@@ -180,7 +180,10 @@ export default {
        range: {
         start: new Date(2019, 0, 1), 
         end: new Date(2019, 9, 8) 
-      }
+      },
+      tit:"Cantidad total de clientes",
+      tit2:"Monto total en transacciones ",
+      tit3:"Cantidad total de transacciones"
     }
   },
   mounted() {

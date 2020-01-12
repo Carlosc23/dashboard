@@ -1,15 +1,8 @@
 <template>
   <div class="scorecard" @mouseleave="setGuide">
-    <zingchart
-      ref="chart"
-      :data="chart"
-      :values="accumulatedValues"
-      :width="100"
-      :height="50"
-      @guide_mousemove="changeValue"
-    />
+
     <div class="scorecard__value">{{currentValue}}</div>
-    <div class="scorecard__header">Total Sales this Month</div>
+    <div class="scorecard__header">{{textTit}}</div>
   </div>
 </template>
 
@@ -33,6 +26,9 @@ export default {
     },
     end: {
       type: Date
+    },
+    textTit:{
+      type:String
     }
   },
   methods: {
@@ -127,7 +123,8 @@ export default {
   },
   data() {
     return {
-      currentValue: 0
+      currentValue: 150000,
+      textTit: ""
     };
   }
 };

@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "start":"vue-cli-service serve"
   },
   "dependencies": {
     "core-js": "^3.4.4",
+    "v-calendar": "^1.0.0-beta.22",
     "vue": "^2.6.10",
     "zingchart-vue": "^1.0.1",
     "zinggrid": "^1.1.1"

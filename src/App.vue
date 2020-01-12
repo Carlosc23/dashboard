@@ -10,9 +10,19 @@
         <total-sales-spark :values="transactions" :textTit="tit2" :start="range.start" :end="range.end"/>
         <total-sales-spark :values="transactions" :textTit="tit3" :start="range.start" :end="range.end"/>
         </div>
+         <header>
+      </header>
+        <h2>Clientes</h2>
+          <div class="dashboard__row">
+        <type-of-clients-chart style="flex:2" :data="transactions"  />
+        <expense-of-clients-chart :entries="transactions" />
+      </div>
+      <header>
+      </header>
+        <h2>Categorias</h2>
       <div class="dashboard__row">
         <latest-transactions-chart style="flex:2" :entries="transactions" />
-        <transaction-breakdown-chart  :entries="transactions" />
+           <latest-transactions-chart style="flex:2" :entries="transactions" />
       </div>
       <div class="dashboard__row">
         <transaction-details-grid id="td-grid" :entries="transactions" />
@@ -152,6 +162,8 @@ import LatestTransactionsChart from './components/LatestTransactionsChart.vue';
 import TransactionBreakdownChart from './components/TransactionBreakdownChart.vue';
 import TransactionDetailsGrid from './components/TransactionDetailsGrid.vue';
 import TotalSalesSpark from "./components/TotalSalesSpark.vue";
+import TypeOfClientsChart from "./components/TypeOfClientsChart.vue";
+import ExpenseOfClientsChart from "./components/ExpenseOfClientsChart.vue";
 //import TotalYTDSpark from "./components/TotalYTDSpark.vue";
 //import ChangeCustomersSpark from "./components/ChangeCustomersSpark.vue";
 
@@ -162,6 +174,8 @@ export default {
     TransactionBreakdownChart,
     TransactionDetailsGrid,
     TotalSalesSpark,
+    TypeOfClientsChart,
+    ExpenseOfClientsChart 
     //"total-ytd-spark": TotalYTDSpark,
     //ChangeCustomersSpark
   },

@@ -6,9 +6,9 @@
         <h1>BAM dashboard</h1>
       </header>
        <div class="dashboard__summary">
-        <total-sales-spark :values="transactions" :val="40879" :textTit="tit" :typee="op1" :start="range.start" :end="range.end"/>
-        <total-sales-spark :values="transactions" :val="3745072" :textTit="tit2" :typee="op2"  :start="range.start" :end="range.end"/>
-        <total-sales-spark :values="transactions" :val="1911376" :textTit="tit3" :typee="op3"  :start="range.start" :end="range.end"/>
+        <total-sales-spark  :val="info" :textTit="tit" :typee="op1" />
+        <total-sales-spark :val="info2" :textTit="tit2" :typee="op2"  />
+        <total-sales-spark  :val="info3" :textTit="tit3" :typee="op3" />
         </div>
          <header>
       </header>
@@ -156,7 +156,6 @@ a.router-link-exact-active {
 }
 </style>
 <script>
-import rawTransactions from './data/transactions.js';
 
 import LatestTransactionsChart from './components/LatestTransactionsChart.vue';
 import TransactionBreakdownChart from './components/TransactionBreakdownChart.vue';
@@ -167,9 +166,6 @@ import TypeOfCategoriesChart from "./components/TypeOfCategoriesChart.vue";
 import TypeOfCategoriesTrChart from "./components/TypeOfCategoriesTrChart.vue";
 import ExpenseOfClientsChart from "./components/ExpenseOfClientsChart.vue";
 import axios from 'axios'
-//import TotalYTDSpark from "./components/TotalYTDSpark.vue";
-//import ChangeCustomersSpark from "./components/ChangeCustomersSpark.vue";
-
 export default {
   name: 'app',
   components: {
@@ -181,33 +177,15 @@ export default {
     ExpenseOfClientsChart,
     TypeOfCategoriesChart,
     TypeOfCategoriesTrChart 
-    //"total-ytd-spark": TotalYTDSpark,
-    //ChangeCustomersSpark
   },
-   computed: {
-    transactions() {
-      return this.rawTransactions.filter(entry => {
-        return (
-          entry.timestamp >= this.range.start.getTime() &&
-          entry.timestamp < this.range.end.getTime()
-        );
-      });
-    }
-    },
   data() {
     return {
-       rawTransactions,
-       range: {
-        start: new Date(2019, 0, 1), 
-        end: new Date(2019, 9, 8) 
-      },
       tit:"Cantidad total de clientes",
       tit2:"Monto total en millones de Q de transacciones ",
       tit3:"Cantidad total de transacciones",
-      op1:"clientsCount",
-      op2:"transactionCount",
-      op3:"clientsAmount",
-      info:null
+      info:null,
+      info2:null,
+      info3:null
     }
   },
   methods:{
@@ -215,6 +193,8 @@ export default {
       const a = await axios
       .get('http://tectestapi.azurewebsites.net/summary')
       this.info = a.data.clients;
+      this.info = a.data.amount;
+      this.info = a.data.transaction;
       
     }
   },

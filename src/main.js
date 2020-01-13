@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-
+import axios from 'axios'
 Vue.config.productionTip = false;
 
 // import the zingchart-vue component, which in turn, imports the zingchart library itself.

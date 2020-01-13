@@ -10,17 +10,11 @@ export default {
     return {
       theme,
       expectedYTD: [
-        80000,
-        120000,
-        300000,
-        350000,
-        400000,
-        500000,
-        600000,
-        620000,
-        700000,
-        730000
-      ]
+       1642755.301911394
+      ],
+      expectedYTD2: [
+       2102317.634356314
+      ],
     };
   },
   computed: {
@@ -28,7 +22,7 @@ export default {
       return {
         type: "bar",
         title: {
-          text: "Gastos por categoría"
+          text: "Gastos por cada tipo de cliente"
         },
         plot: {
           animation: {
@@ -41,29 +35,23 @@ export default {
         series: [
           {
             values: this.expectedYTD,
-            text: "Projected"
+            text: "Nacionales"
           },
-          {
-            values: this.yearToDate,
-            text: "Actual"
+           {
+            values: this.expectedYTD2,
+            text: "Extranjeros"
           }
         ],
         tooltip: {
           negation: "currency",
-          text: "$%v",
+          text: "Q%v %t",
           "thousands-separator": ","
         },
-        legend: {},
+        //legend: {},
         scaleX: {
-          step: "month",
-          minValue: firstDayOfTheCurrentYear(),
           label: {
-            text: "Month/Year"
+            text: "Nacionales/Extranjeros"
           },
-          transform: {
-            type: "date",
-            all: "%m/%y"
-          }
         },
         scaleY: {
           short: true,
@@ -71,32 +59,8 @@ export default {
         }
       };
     },
-    yearToDate() {
-      const monthSales = [];
-      const currentYear = new Date().getFullYear();
-      // Loop through all the customers and bucket each sale by month
-      this.data.forEach(transaction => {
-        let customerTotal = 0;
-        // Check the paid date if its within the calendar year.
-        const paidDate = new Date(transaction.timestamp);
-        if (paidDate.getFullYear() === currentYear) {
-          if (transaction.purchase_type !== "cancellation") {
-            monthSales[paidDate.getMonth()] =
-              monthSales[paidDate.getMonth()] || 0;
-            monthSales[paidDate.getMonth()] += parseFloat(transaction.amount);
-          }
-        }
-      });
-      let total = 0;
-      return monthSales.map(amount => {
-        total += amount;
-        return total;
-      });
-    }
+
   }
 };
-function firstDayOfTheCurrentYear() {
-  const today = new Date();
-  return new Date("1/1/" + today.getFullYear()).getTime();
-}
+
 </script>

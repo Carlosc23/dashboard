@@ -3,12 +3,12 @@
      
     <section class="dashboard">
       <header>
-        <h1>BAM Dashboard</h1>
+        <h1>BAM dashboard</h1>
       </header>
        <div class="dashboard__summary">
-        <total-sales-spark :values="transactions" :textTit="tit" :start="range.start" :end="range.end"/>
-        <total-sales-spark :values="transactions" :textTit="tit2" :start="range.start" :end="range.end"/>
-        <total-sales-spark :values="transactions" :textTit="tit3" :start="range.start" :end="range.end"/>
+        <total-sales-spark :values="transactions" :val="40879" :textTit="tit" :typee="op1" :start="range.start" :end="range.end"/>
+        <total-sales-spark :values="transactions" :val="3745072" :textTit="tit2" :typee="op2"  :start="range.start" :end="range.end"/>
+        <total-sales-spark :values="transactions" :val="1911376" :textTit="tit3" :typee="op3"  :start="range.start" :end="range.end"/>
         </div>
          <header>
       </header>
@@ -21,11 +21,11 @@
       </header>
         <h2>Categorias</h2>
       <div class="dashboard__row">
-        <latest-transactions-chart style="flex:2" :entries="transactions" />
-           <latest-transactions-chart style="flex:2" :entries="transactions" />
+          <type-of-categories-chart style="flex:2" :data="transactions"  />
+         
       </div>
       <div class="dashboard__row">
-        <transaction-details-grid id="td-grid" :entries="transactions" />
+         <type-of-categories-tr-chart style="flex:2" :data="transactions"  />
       </div>
 
     </section>
@@ -163,7 +163,10 @@ import TransactionBreakdownChart from './components/TransactionBreakdownChart.vu
 import TransactionDetailsGrid from './components/TransactionDetailsGrid.vue';
 import TotalSalesSpark from "./components/TotalSalesSpark.vue";
 import TypeOfClientsChart from "./components/TypeOfClientsChart.vue";
+import TypeOfCategoriesChart from "./components/TypeOfCategoriesChart.vue";
+import TypeOfCategoriesTrChart from "./components/TypeOfCategoriesTrChart.vue";
 import ExpenseOfClientsChart from "./components/ExpenseOfClientsChart.vue";
+import axios from 'axios'
 //import TotalYTDSpark from "./components/TotalYTDSpark.vue";
 //import ChangeCustomersSpark from "./components/ChangeCustomersSpark.vue";
 
@@ -175,7 +178,9 @@ export default {
     TransactionDetailsGrid,
     TotalSalesSpark,
     TypeOfClientsChart,
-    ExpenseOfClientsChart 
+    ExpenseOfClientsChart,
+    TypeOfCategoriesChart,
+    TypeOfCategoriesTrChart 
     //"total-ytd-spark": TotalYTDSpark,
     //ChangeCustomersSpark
   },
@@ -187,7 +192,8 @@ export default {
           entry.timestamp < this.range.end.getTime()
         );
       });
-    },},
+    }
+    },
   data() {
     return {
        rawTransactions,
@@ -196,11 +202,29 @@ export default {
         end: new Date(2019, 9, 8) 
       },
       tit:"Cantidad total de clientes",
-      tit2:"Monto total en transacciones ",
-      tit3:"Cantidad total de transacciones"
+      tit2:"Monto total en millones de Q de transacciones ",
+      tit3:"Cantidad total de transacciones",
+      op1:"clientsCount",
+      op2:"transactionCount",
+      op3:"clientsAmount",
+      info:null
     }
   },
-  mounted() {
+  methods:{
+    async algo(){
+      const a = await axios
+      .get('http://tectestapi.azurewebsites.net/summary')
+      this.info = a.data.clients;
+      
+    }
+  },
+  async created() {
+    this.algo();
+      /* axios
+      .get('http://tectestapi.azurewebsites.net/summary')
+      .then(response =>
+      (this.info = response.data.clients)
+      ).catch(error => this.info = error)*/
   }
 }
 </script>

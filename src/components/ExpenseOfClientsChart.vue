@@ -1,12 +1,16 @@
 <template>
-   <zingchart :data="chartConfig"  :height="'100%'"/> 
+   <zingchart :data="chartConfig" :theme="theme"  :height="'100%'"/> 
+
+   
 </template>
 
 <script>
+import theme from "../theme/theme.js";
 export default {
   props: ['entries'],
   data() {
     return {
+
     };
   },
   computed: {
@@ -19,7 +23,7 @@ export default {
       return categories;
     },
     chartConfig() {
-      const colors = [
+      const colorss = [
         {
           backgroundColor: '#04A3F5',
           hoverState: {
@@ -41,6 +45,7 @@ export default {
       ]
       const config ={
         type: 'pie',
+
         tooltip: {
           text: '%npv%'
         },
@@ -56,12 +61,15 @@ export default {
          	  borderWidth: 2,
           }
         },
-        series: Object.keys(this.acquisitionBreakdown).map((type, index) => {
+        /*series: Object.keys(this.acquisitionBreakdown).map((type, index) => {
+          console.log(this.acquisitionBreakdown[type])
           return Object.assign(
             { values: [this.acquisitionBreakdown[type]], text: type},
             colors[index],
           );
-        })
+        })*/
+        series: [{ values: [36537],text:"Nacionales",backgroundColor: '#04A3F5',},
+                  { values: [4351],text:"Extranjeros",backgroundColor: '#98D1EE',}]
       };
       return config;
     },
